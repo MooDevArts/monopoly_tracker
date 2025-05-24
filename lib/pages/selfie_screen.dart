@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -31,18 +31,30 @@ class _SelfieScreenState extends State<SelfieScreen> {
   }
 
   Future<void> _takeSelfie() async {
-    final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.camera,
-    );
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        setState(() {
-          errorMessage = 'No Image Selected';
-        });
-      }
-    });
+    final PermissionStatus status = await Permission.camera.request();
+    if (status.isGranted) {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.camera,
+      );
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+        } else {
+          setState(() {
+            errorMessage = 'No Image Selected';
+          });
+        }
+      });
+    } else if (status.isDenied) {
+      setState(() {
+        errorMessage = 'Camera permissions were denied';
+      });
+    } else if (status.isPermanentlyDenied) {
+      setState(() {
+        errorMessage = 'Camera permissions were denied';
+      });
+      openAppSettings();
+    }
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:monopoly_tracker/pages/games_screen.dart';
 import 'package:monopoly_tracker/pages/selfie_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SelfieScreen(),
+                        builder: (context) => const GamesScreen(),
                       ),
                     );
                   }
@@ -74,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SelfieScreen(),
+                            builder: (context) => const GamesScreen(),
                           ),
                         );
                       }
