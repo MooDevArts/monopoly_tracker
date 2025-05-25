@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:monopoly_tracker/pages/pay_screen.dart';
 
 class MpayHome extends StatefulWidget {
   final String gameId;
@@ -102,6 +103,87 @@ class _MpayHomeState extends State<MpayHome> {
               ),
             SizedBox(height: 20),
             Text('Pay Other Players'),
+            SizedBox(height: 20),
+            Expanded(
+              child: StreamBuilder(
+                stream:
+                    FirebaseDatabase.instance
+                        .ref('games')
+                        .child(widget.gameId)
+                        .child('Players')
+                        .onValue,
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<DatabaseEvent> snapshot,
+                ) {
+                  if (snapshot.hasData) {
+                    final playersData =
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>?;
+                    if (playersData == null || playersData.isEmpty) {
+                      return const Center(
+                        child: Text('No other players in this game yet.'),
+                      );
+                    }
+
+                    final playerIds =
+                        playersData.keys.toList(); // Get all player IDs
+                    final currentPlayerId =
+                        FirebaseAuth.instance.currentUser?.uid;
+                    final otherPlayerIds =
+                        playersData.keys
+                            .where((playerId) => playerId != currentPlayerId)
+                            .toList();
+
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                          ),
+                      itemCount: otherPlayerIds.length,
+                      itemBuilder: (context, index) {
+                        final playerId = otherPlayerIds[index];
+                        final player =
+                            playersData[playerId] as Map<dynamic, dynamic>?;
+                        final playerName = player?['name'] ?? 'No Name';
+
+                        return InkWell(
+                          onTap: () {
+                            if (mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => PayScreen(
+                                        gameId: widget.gameId,
+                                        fromPlayerId: currentPlayerId!,
+                                        toPlayerId: playerId,
+                                      ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                playerName,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error loading players: ${snapshot.error}'),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
