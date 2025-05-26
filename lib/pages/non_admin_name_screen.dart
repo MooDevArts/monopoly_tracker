@@ -61,7 +61,7 @@ class _NonAdminNameScreenState extends State<NonAdminNameScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Non Admins enter game')),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(50),
+        padding: EdgeInsets.all(50),
         child: Column(
           children: <Widget>[
             TextField(
