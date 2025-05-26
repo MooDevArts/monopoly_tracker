@@ -97,9 +97,6 @@ class _GamesScreenState extends State<GamesScreen> {
                                               dynamic,
                                               dynamic
                                             >?; // Cast to your expected type
-                                    print(
-                                      value?[gameId]['Players'][currentUserId],
-                                    );
 
                                     if (value?[gameId]['Players'][currentUserId] !=
                                         null) {
