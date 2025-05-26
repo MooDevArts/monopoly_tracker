@@ -91,6 +91,8 @@ class _PayScreenState extends State<PayScreen> {
         snapshot.value
             as Map<dynamic, dynamic>?; // Rename to gameData to reflect content
 
+    print(gameData);
+
     final playersData =
         gameData?[widget.gameId]?['Players']
             as Map<dynamic, dynamic>?; // Access the Players node
