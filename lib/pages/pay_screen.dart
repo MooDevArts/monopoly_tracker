@@ -27,11 +27,7 @@ class _PayScreenState extends State<PayScreen> {
   }
 
   Future<void> _fetchRecipientName() async {
-    final DatabaseReference playerRef = FirebaseDatabase.instance
-        .ref('games')
-        .child(widget.gameId)
-        .child('Players')
-        .child(widget.toPlayerId);
+    final DatabaseReference playerRef = FirebaseDatabase.instance.ref('games');
 
     final snapshot = await playerRef.get();
     if (snapshot.exists) {
@@ -71,11 +67,7 @@ class _PayScreenState extends State<PayScreen> {
 
     final String fromPlayerId = widget.fromPlayerId;
 
-    final DatabaseReference senderRef = FirebaseDatabase.instance
-        .ref('games')
-        .child(widget.gameId)
-        .child('Players')
-        .child(fromPlayerId);
+    final DatabaseReference senderRef = FirebaseDatabase.instance.ref('games');
 
     final snapshot = await senderRef.get();
     if (!snapshot.exists || snapshot.value == null) {
@@ -87,9 +79,7 @@ class _PayScreenState extends State<PayScreen> {
       return;
     }
 
-    final gameData =
-        snapshot.value
-            as Map<dynamic, dynamic>?; // Rename to gameData to reflect content
+    final gameData = snapshot.value as Map<dynamic, dynamic>?;
 
     final playersData =
         gameData?[widget.gameId]?['Players']
@@ -111,11 +101,9 @@ class _PayScreenState extends State<PayScreen> {
     final String toPlayerId = widget.toPlayerId;
     final double newSenderBalance = currentBalance - amountToPay;
 
-    final DatabaseReference receiverRef = FirebaseDatabase.instance
-        .ref('games')
-        .child(widget.gameId)
-        .child('Players')
-        .child(toPlayerId);
+    final DatabaseReference receiverRef = FirebaseDatabase.instance.ref(
+      'games',
+    );
 
     final receiverSnapshot = await receiverRef.get();
     if (!receiverSnapshot.exists || receiverSnapshot.value == null) {
