@@ -130,9 +130,7 @@ class _PayScreenState extends State<PayScreen> {
     final receiverPlayerData = receiverSnapshot.value as Map<dynamic, dynamic>?;
     final currentRecipientBalance =
         receiverPlayerData?[widget.gameId]['Players'][widget
-                .toPlayerId]['balance']
-            as int? ??
-        0;
+            .toPlayerId]['balance'];
 
     final double newRecipientBalance = currentRecipientBalance + amountToPay;
     print(newRecipientBalance);
@@ -173,6 +171,9 @@ class _PayScreenState extends State<PayScreen> {
       'balance': newSenderBalance,
       'isAdmin': currentPlayer?['isAdmin'],
     });
+    if (mounted) {
+      Navigator.pop(context, true);
+    }
   }
 
   @override

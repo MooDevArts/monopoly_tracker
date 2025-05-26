@@ -153,9 +153,9 @@ class _MpayHomeState extends State<MpayHome> {
                           final playerName = player?['name'] ?? 'No Name';
 
                           return InkWell(
-                            onTap: () {
+                            onTap: () async {
                               if (mounted) {
-                                Navigator.push(
+                                final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder:
@@ -166,6 +166,15 @@ class _MpayHomeState extends State<MpayHome> {
                                         ),
                                   ),
                                 );
+                                if (result == true) {
+                                  // Check if the result is true (payment was done)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text('Payment Seccessful'),
+                                    ),
+                                  );
+                                }
                               }
                             },
                             child: Card(
