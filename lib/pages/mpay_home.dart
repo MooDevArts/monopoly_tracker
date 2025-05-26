@@ -17,7 +17,7 @@ class _MpayHomeState extends State<MpayHome> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       child: Scaffold(
         appBar: AppBar(title: Text('Mpay Home')),
         body: Center(

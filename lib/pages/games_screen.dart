@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:monopoly_tracker/pages/game_name_screen.dart';
@@ -79,17 +80,66 @@ class _GamesScreenState extends State<GamesScreen> {
                           itemBuilder: (context, index) {
                             final gameId = gameIds[index];
                             return InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 if (mounted) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => NonAdminNameScreen(
-                                            gameId: gameId,
+                                  final String? currentUserId =
+                                      FirebaseAuth.instance.currentUser?.uid;
+
+                                  if (currentUserId != null) {
+                                    final DatabaseReference gamesRef =
+                                        FirebaseDatabase.instance.ref('games');
+
+                                    final snapshot = await gamesRef.get();
+
+                                    final value =
+                                        snapshot.value
+                                            as Map<
+                                              dynamic,
+                                              dynamic
+                                            >?; // Cast to your expected type
+                                    print(
+                                      value?[gameId]['Players'][currentUserId],
+                                    );
+
+                                    if (value?[gameId]['Players'][currentUserId] !=
+                                        null) {
+                                      // User is already in the game, navigate to the other screen
+                                      if (mounted) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (
+                                                  context,
+                                                ) => /* Your Other Screen Widget */
+                                                    MpayHome(gameId: gameId),
                                           ),
-                                    ),
-                                  );
+                                        );
+                                      }
+                                    } else {
+                                      // User is not in the game, navigate to NonAdminNameScreen
+                                      if (mounted) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => NonAdminNameScreen(
+                                                  gameId: gameId,
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  } else {
+                                    // Handle the case where the user is not logged in
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'You must be logged in to join a game.',
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               child: Card(

@@ -35,7 +35,7 @@ class _NonAdminNameScreenState extends State<NonAdminNameScreen> {
           'isAdmin': false,
         });
         if (mounted) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => MpayHome(gameId: widget.gameId),
