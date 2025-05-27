@@ -193,7 +193,7 @@ class _MpayHomeState extends State<MpayHome> {
                                   //play sound
                                   final player = AudioPlayer();
                                   await player.play(
-                                    AssetSource('/pay-sound.mp3'),
+                                    AssetSource('pay-sound.mp3'),
                                   );
                                   // Check if the result is true (payment was done)
                                   ScaffoldMessenger.of(context).showSnackBar(
