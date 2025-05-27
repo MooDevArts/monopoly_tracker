@@ -59,7 +59,7 @@ class _NonAdminNameScreenState extends State<NonAdminNameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Non Admins enter game')),
+      appBar: AppBar(title: Text('Enter name')),
       body: Padding(
         padding: EdgeInsets.all(50),
         child: Column(

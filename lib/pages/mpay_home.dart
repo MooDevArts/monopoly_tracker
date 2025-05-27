@@ -14,6 +14,28 @@ class MpayHome extends StatefulWidget {
 
 class _MpayHomeState extends State<MpayHome> {
   final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  Map<dynamic, dynamic>? userData;
+
+  // set init method to assign userdata
+
+  void isAdmin() async {
+    final snapshot = await FirebaseDatabase.instance.ref('games').get();
+    final gamesData = snapshot.value as Map<dynamic, dynamic>?;
+    // final userData = ;
+    userData = gamesData?[widget.gameId]['Players'][currentUserId];
+
+    if (userData?['isAdmin'] == true) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MpayHome(gameId: widget.gameId),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -202,6 +224,15 @@ class _MpayHomeState extends State<MpayHome> {
             ],
           ),
         ),
+        floatingActionButton:
+            userData?['isAdmin'] == true
+                ? FloatingActionButton(
+                  onPressed: () {
+                    isAdmin();
+                  },
+                  child: Icon(Icons.account_balance_outlined),
+                )
+                : null,
       ),
     );
   }

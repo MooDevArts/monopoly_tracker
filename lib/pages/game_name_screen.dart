@@ -34,6 +34,14 @@ class _GameNameScreenState extends State<GameNameScreen> {
           'balance': 1500,
           'isAdmin': true,
         });
+
+        final DatabaseReference bankRef = newGameRef.child('Players').push();
+        await bankRef.set({
+          'name': 'Bank',
+          'balance': 10000000,
+          'isAdmin': false,
+        });
+
         if (mounted) {
           Navigator.push(
             context,
