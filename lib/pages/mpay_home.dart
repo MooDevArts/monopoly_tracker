@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:monopoly_tracker/pages/pay_screen.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MpayHome extends StatefulWidget {
   final String gameId;
@@ -189,6 +190,11 @@ class _MpayHomeState extends State<MpayHome> {
                                   ),
                                 );
                                 if (result == true) {
+                                  //play sound
+                                  final player = AudioPlayer();
+                                  await player.play(
+                                    AssetSource('/pay-sound.mp3'),
+                                  );
                                   // Check if the result is true (payment was done)
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
