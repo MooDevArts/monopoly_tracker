@@ -43,7 +43,7 @@ class _GameNameScreenState extends State<GameNameScreen> {
         });
 
         if (mounted) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => MpayHome(gameId: gameId)),
           );
