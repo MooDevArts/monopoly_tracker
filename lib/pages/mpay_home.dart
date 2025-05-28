@@ -72,7 +72,8 @@ class _MpayHomeState extends State<MpayHome> {
                             playerData['name'] ??
                             'No Name'; // Modified this line
                         final playerBalance =
-                            playerData['balance'] ?? '0'; // Modified this line
+                            (playerData['balance'] as num).toInt() ??
+                            '0'; // Modified this line
 
                         return Card(
                           // Added this widget
@@ -96,7 +97,7 @@ class _MpayHomeState extends State<MpayHome> {
                                 SizedBox(height: 10),
                                 Text('Your MPay Balance'),
                                 Text(
-                                  '$playerBalance',
+                                  '${playerBalance}',
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w500,
@@ -227,6 +228,10 @@ class _MpayHomeState extends State<MpayHome> {
                   },
                 ),
               ),
+
+              // Show logs here
+              Text('data'),
+              SizedBox(height: 50),
             ],
           ),
         ),

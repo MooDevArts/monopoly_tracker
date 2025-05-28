@@ -81,8 +81,6 @@ class _PayScreenState extends State<PayScreen> {
 
     final gameData = snapshot.value as Map<dynamic, dynamic>?;
 
-    print(gameData);
-
     final playersData =
         gameData?[widget.gameId]?['Players']
             as Map<dynamic, dynamic>?; // Access the Players node
@@ -123,8 +121,6 @@ class _PayScreenState extends State<PayScreen> {
             .toPlayerId]['balance'];
 
     final double newRecipientBalance = currentRecipientBalance + amountToPay;
-    print(newRecipientBalance);
-    print(newSenderBalance);
 
     // actual payment
 
@@ -161,6 +157,20 @@ class _PayScreenState extends State<PayScreen> {
       'balance': newSenderBalance,
       'isAdmin': currentPlayer?['isAdmin'],
     });
+
+    // Create Logs here
+    final DatabaseReference logReference =
+        FirebaseDatabase.instance
+            .ref('games')
+            .child(widget.gameId)
+            .child('Logs')
+            .push();
+
+    logReference.set({
+      'message':
+          '${currentPlayer?['name']} paid ${receiverPlayerData?[widget.gameId]['Players'][widget.toPlayerId]['name']} ${amountToPay.toInt()}',
+    });
+
     if (mounted) {
       Navigator.pop(context, true);
     }
