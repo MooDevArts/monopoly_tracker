@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:monopoly_tracker/pages/bank_screen.dart';
 import 'package:monopoly_tracker/pages/pay_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class MpayHome extends StatefulWidget {
+class BankScreen extends StatefulWidget {
   final String gameId;
+  final String bankId;
 
-  const MpayHome({super.key, required this.gameId});
+  const BankScreen({super.key, required this.gameId, required this.bankId});
 
   @override
-  State<MpayHome> createState() => _MpayHomeState();
+  State<BankScreen> createState() => _BankScreenState();
 }
 
-class _MpayHomeState extends State<MpayHome> {
-  final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+class _BankScreenState extends State<BankScreen> {
+  String? currentUserId = '';
   Map<dynamic, dynamic>? userData;
   String? bankId;
 
@@ -27,6 +27,7 @@ class _MpayHomeState extends State<MpayHome> {
   }
 
   Future<void> _fetchUserData() async {
+    currentUserId = widget.bankId;
     final DatabaseReference userRef = FirebaseDatabase.instance.ref(
       'games/${widget.gameId}/Players/$currentUserId',
     );
@@ -41,17 +42,8 @@ class _MpayHomeState extends State<MpayHome> {
   }
 
   void isAdmin() async {
-    if (mounted) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder:
-              (context) => BankScreen(
-                gameId: widget.gameId,
-                bankId: userData?['bankId'],
-              ),
-        ),
-      );
+    if (userData?['isAdmin'] == true) {
+      print(userData?['bankId']);
     }
   }
 
@@ -175,8 +167,7 @@ class _MpayHomeState extends State<MpayHome> {
 
                       final playerIds =
                           playersData.keys.toList(); // Get all player IDs
-                      final currentPlayerId =
-                          FirebaseAuth.instance.currentUser?.uid;
+                      final currentPlayerId = widget.bankId;
                       final otherPlayerIds =
                           playersData.keys
                               .where((playerId) => playerId != currentPlayerId)
@@ -247,83 +238,8 @@ class _MpayHomeState extends State<MpayHome> {
                 ),
               ),
               SizedBox(height: 10),
+
               // Show logs here
-              Text(
-                'Board wide Transactions',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 10),
-              StreamBuilder(
-                stream:
-                    FirebaseDatabase.instance
-                        .ref('games')
-                        .child(widget.gameId)
-                        .child('Logs')
-                        .orderByKey()
-                        .onValue,
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<DatabaseEvent> snapshot,
-                ) {
-                  // We'll work inside this builder function
-                  if (snapshot.hasData) {
-                    final snapshotValue = snapshot.data!.snapshot.value;
-                    if (snapshotValue is Map<dynamic, dynamic>) {
-                      final logsData = snapshotValue;
-                      final logsList = logsData.entries.toList();
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              if (logsData.isEmpty)
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('No logs yet.'),
-                                ),
-                              for (var entry in logsData.entries.toList())
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                      horizontal: 16,
-                                    ),
-                                    child: Text(
-                                      entry.value['message']?.toString() ??
-                                          'No message',
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('No logs yet.'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    return Padding(
-                      padding: EdgeInsetsGeometry.all(20),
-                      child: Text('Error loading logs'),
-                    );
-                  } else {
-                    return Padding(
-                      padding: EdgeInsetsGeometry.all(20),
-                      child: Text('Loading your data..'),
-                    );
-                  }
-                },
-              ),
               SizedBox(height: 50),
             ],
           ),

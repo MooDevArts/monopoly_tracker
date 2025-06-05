@@ -28,18 +28,19 @@ class _GameNameScreenState extends State<GameNameScreen> {
         final DatabaseReference newGameRef = gamesRef.push();
         final String gameId = newGameRef.key!;
 
-        // Set the player's preferred name under the Players node of the new game
-        await newGameRef.child('Players').child(currentPlayerId).set({
-          'name': preferredGameName,
-          'balance': 1500,
-          'isAdmin': true,
-        });
-
         final DatabaseReference bankRef = newGameRef.child('Players').push();
         await bankRef.set({
           'name': 'Bank',
           'balance': 10000000,
           'isAdmin': false,
+        });
+
+        // Set the player's preferred name under the Players node of the new game
+        await newGameRef.child('Players').child(currentPlayerId).set({
+          'name': preferredGameName,
+          'balance': 1500,
+          'isAdmin': true,
+          'bankId': bankRef.key,
         });
 
         if (mounted) {
