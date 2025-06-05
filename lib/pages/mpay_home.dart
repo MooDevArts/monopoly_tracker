@@ -97,7 +97,7 @@ class _MpayHomeState extends State<MpayHome> {
                                 SizedBox(height: 10),
                                 Text('Your MPay Balance'),
                                 Text(
-                                  '${playerBalance}',
+                                  ' ${playerBalance}',
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w500,
@@ -132,7 +132,7 @@ class _MpayHomeState extends State<MpayHome> {
                 ),
               SizedBox(height: 20),
               Text('Pay Other Players'),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Expanded(
                 child: StreamBuilder(
                   stream:
@@ -228,9 +228,69 @@ class _MpayHomeState extends State<MpayHome> {
                   },
                 ),
               ),
-
+              SizedBox(height: 10),
               // Show logs here
-              Text('data'),
+              Text(
+                'Board wide Transactions',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 10),
+              StreamBuilder(
+                stream:
+                    FirebaseDatabase.instance
+                        .ref('games')
+                        .child(widget.gameId)
+                        .child('Logs')
+                        .orderByKey()
+                        .onValue,
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<DatabaseEvent> snapshot,
+                ) {
+                  // We'll work inside this builder function
+                  if (snapshot.hasData) {
+                    final logsData =
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+                    final logsList = logsData.entries.toList();
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            if (logsData.isEmpty)
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('No logs yet.'),
+                              ),
+                            for (var entry in logsData.entries.toList())
+                              Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 16,
+                                  ),
+                                  child: Text(
+                                    entry.value['message']?.toString() ??
+                                        'No message',
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Padding(
+                      padding: EdgeInsetsGeometry.all(20),
+                      child: Text('Error loading logs'),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsetsGeometry.all(20),
+                      child: Text('Loading your data..'),
+                    );
+                  }
+                },
+              ),
               SizedBox(height: 50),
             ],
           ),
