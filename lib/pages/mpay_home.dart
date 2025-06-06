@@ -27,13 +27,11 @@ class _MpayHomeState extends State<MpayHome> {
   }
 
   Future<void> _fetchUserData() async {
-    final DatabaseReference userRef = FirebaseDatabase.instance.ref(
-      'games/${widget.gameId}/Players/$currentUserId',
-    );
+    final DatabaseReference userRef = FirebaseDatabase.instance.ref('games');
 
     final snapshot = await userRef.get();
     userData = snapshot.value as Map<dynamic, dynamic>?;
-    final realUserData = userData?[widget.gameId]['Players'][currentUserId];
+    final realUserData = userData?[widget.gameId]?['Players']?[currentUserId];
 
     setState(() {
       userData = realUserData;

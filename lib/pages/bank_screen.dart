@@ -28,9 +28,7 @@ class _BankScreenState extends State<BankScreen> {
 
   Future<void> _fetchUserData() async {
     currentUserId = widget.bankId;
-    final DatabaseReference userRef = FirebaseDatabase.instance.ref(
-      'games/${widget.gameId}/Players/$currentUserId',
-    );
+    final DatabaseReference userRef = FirebaseDatabase.instance.ref('games');
 
     final snapshot = await userRef.get();
     userData = snapshot.value as Map<dynamic, dynamic>?;
