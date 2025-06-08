@@ -149,102 +149,100 @@ class _MpayHomeState extends State<MpayHome> {
               SizedBox(height: 20),
               Text('Pay Other Players'),
               SizedBox(height: 10),
-              Expanded(
-                child: StreamBuilder(
-                  stream:
-                      FirebaseDatabase.instance
-                          .ref('games')
-                          .child(widget.gameId)
-                          .child('Players')
-                          .onValue,
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<DatabaseEvent> snapshot,
-                  ) {
-                    if (snapshot.hasData) {
-                      final playersData =
-                          snapshot.data!.snapshot.value
-                              as Map<dynamic, dynamic>?;
-                      if (playersData == null || playersData.isEmpty) {
-                        return const Center(
-                          child: Text('No other players in this game yet.'),
-                        );
-                      }
+              StreamBuilder(
+                stream:
+                    FirebaseDatabase.instance
+                        .ref('games')
+                        .child(widget.gameId)
+                        .child('Players')
+                        .onValue,
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<DatabaseEvent> snapshot,
+                ) {
+                  if (snapshot.hasData) {
+                    final playersData =
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>?;
+                    if (playersData == null || playersData.isEmpty) {
+                      return const Center(
+                        child: Text('No other players in this game yet.'),
+                      );
+                    }
 
-                      final playerIds =
-                          playersData.keys.toList(); // Get all player IDs
-                      final currentPlayerId =
-                          FirebaseAuth.instance.currentUser?.uid;
-                      final otherPlayerIds =
-                          playersData.keys
-                              .where((playerId) => playerId != currentPlayerId)
-                              .toList();
+                    final playerIds =
+                        playersData.keys.toList(); // Get all player IDs
+                    final currentPlayerId =
+                        FirebaseAuth.instance.currentUser?.uid;
+                    final otherPlayerIds =
+                        playersData.keys
+                            .where((playerId) => playerId != currentPlayerId)
+                            .toList();
 
-                      return GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                            ),
-                        itemCount: otherPlayerIds.length,
-                        itemBuilder: (context, index) {
-                          final playerId = otherPlayerIds[index];
-                          final player =
-                              playersData[playerId] as Map<dynamic, dynamic>?;
-                          final playerName = player?['name'] ?? 'No Name';
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            childAspectRatio: 1.5,
+                          ),
+                      itemCount: otherPlayerIds.length,
+                      itemBuilder: (context, index) {
+                        final playerId = otherPlayerIds[index];
+                        final player =
+                            playersData[playerId] as Map<dynamic, dynamic>?;
+                        final playerName = player?['name'] ?? 'No Name';
 
-                          return InkWell(
-                            onTap: () async {
-                              if (mounted) {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => PayScreen(
-                                          gameId: widget.gameId,
-                                          fromPlayerId: currentPlayerId!,
-                                          toPlayerId: playerId,
-                                        ),
+                        return InkWell(
+                          onTap: () async {
+                            if (mounted) {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => PayScreen(
+                                        gameId: widget.gameId,
+                                        fromPlayerId: currentPlayerId!,
+                                        toPlayerId: playerId,
+                                      ),
+                                ),
+                              );
+                              if (result == true) {
+                                //play sound
+                                final player = AudioPlayer();
+                                await player.play(AssetSource('pay-sound.mp3'));
+                                // Check if the result is true (payment was done)
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(milliseconds: 800),
+                                    backgroundColor: Colors.green,
+                                    content: Text('Payment Successful'),
                                   ),
                                 );
-                                if (result == true) {
-                                  //play sound
-                                  final player = AudioPlayer();
-                                  await player.play(
-                                    AssetSource('pay-sound.mp3'),
-                                  );
-                                  // Check if the result is true (payment was done)
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: Colors.green,
-                                      content: Text('Payment Successful'),
-                                    ),
-                                  );
-                                }
                               }
-                            },
-                            child: Card(
-                              margin: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
-                                  playerName,
-                                  textAlign: TextAlign.center,
-                                ),
+                            }
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.all(4.0),
+                            child: Center(
+                              child: Text(
+                                playerName,
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error loading players: ${snapshot.error}'),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error loading players: ${snapshot.error}'),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
-              SizedBox(height: 10),
+
               // Show logs here
               Text(
                 'Board wide Transactions',
@@ -331,7 +329,7 @@ class _MpayHomeState extends State<MpayHome> {
                   }
                 },
               ),
-              SizedBox(height: 50),
+              // SizedBox(height: 50),
             ],
           ),
         ),
