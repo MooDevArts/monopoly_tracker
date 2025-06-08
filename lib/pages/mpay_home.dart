@@ -216,7 +216,7 @@ class _MpayHomeState extends State<MpayHome> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       backgroundColor: Colors.green,
-                                      content: Text('Payment Seccessful'),
+                                      content: Text('Payment Successful'),
                                     ),
                                   );
                                 }
@@ -265,10 +265,18 @@ class _MpayHomeState extends State<MpayHome> {
                 ) {
                   // We'll work inside this builder function
                   if (snapshot.hasData) {
-                    final snapshotValue = snapshot.data!.snapshot.value;
+                    var snapshotValue = snapshot.data!.snapshot.value;
+                    Map<dynamic, dynamic> orderedLogs = {};
+                    for (final childSnapshot
+                        in snapshot.data!.snapshot.children) {
+                      if (childSnapshot.key != "_placeholder") {
+                        orderedLogs[childSnapshot.key] = childSnapshot.value;
+                      }
+                    }
+                    snapshotValue = orderedLogs;
                     if (snapshotValue is Map<dynamic, dynamic>) {
                       final logsData = snapshotValue;
-                      final logsList = logsData.entries.toList();
+
                       return Expanded(
                         child: SingleChildScrollView(
                           child: Column(
@@ -278,7 +286,8 @@ class _MpayHomeState extends State<MpayHome> {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text('No logs yet.'),
                                 ),
-                              for (var entry in logsData.entries.toList())
+                              for (var entry
+                                  in logsData.entries.toList().reversed)
                                 Card(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
