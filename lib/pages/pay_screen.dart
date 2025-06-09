@@ -140,6 +140,9 @@ class _PayScreenState extends State<PayScreen> {
       'isAdmin':
           receiverPlayerData?[widget.gameId]['Players'][widget
               .toPlayerId]['isAdmin'],
+      'bankId':
+          receiverPlayerData?[widget.gameId]['Players'][widget
+              .toPlayerId]['bankId'],
     });
 
     //sender balance
@@ -156,6 +159,7 @@ class _PayScreenState extends State<PayScreen> {
       'name': currentPlayer?['name'],
       'balance': newSenderBalance,
       'isAdmin': currentPlayer?['isAdmin'],
+      'bankId': currentPlayer?['bankId'],
     });
 
     // Create Logs here
