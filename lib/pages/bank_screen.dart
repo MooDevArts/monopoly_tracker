@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:monopoly_tracker/pages/pay_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -80,8 +79,8 @@ class _BankScreenState extends State<BankScreen> {
                             playerData['name'] ??
                             'No Name'; // Modified this line
                         final playerBalance =
-                            (playerData['balance'] as num).toInt() ??
-                            '0'; // Modified this line
+                            (playerData['balance'] as num)
+                                .toInt(); // Modified this line
 
                         return Card(
                           // Added this widget
@@ -163,8 +162,6 @@ class _BankScreenState extends State<BankScreen> {
                         );
                       }
 
-                      final playerIds =
-                          playersData.keys.toList(); // Get all player IDs
                       final currentPlayerId = widget.bankId;
                       final otherPlayerIds =
                           playersData.keys
@@ -192,7 +189,7 @@ class _BankScreenState extends State<BankScreen> {
                                     builder:
                                         (context) => PayScreen(
                                           gameId: widget.gameId,
-                                          fromPlayerId: currentPlayerId!,
+                                          fromPlayerId: currentPlayerId,
                                           toPlayerId: playerId,
                                         ),
                                   ),

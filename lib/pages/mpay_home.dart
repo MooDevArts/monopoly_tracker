@@ -88,8 +88,8 @@ class _MpayHomeState extends State<MpayHome> {
                             playerData['name'] ??
                             'No Name'; // Modified this line
                         final playerBalance =
-                            (playerData['balance'] as num).toInt() ??
-                            '0'; // Modified this line
+                            (playerData['balance'] as num)
+                                .toInt(); // Modified this line
 
                         return Card(
                           // Added this widget
@@ -169,8 +169,6 @@ class _MpayHomeState extends State<MpayHome> {
                       );
                     }
 
-                    final playerIds =
-                        playersData.keys.toList(); // Get all player IDs
                     final currentPlayerId =
                         FirebaseAuth.instance.currentUser?.uid;
                     final otherPlayerIds =

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +10,6 @@ class SelfieScreen extends StatefulWidget {
 }
 
 class _SelfieScreenState extends State<SelfieScreen> {
-  File? _image;
   final ImagePicker _picker = ImagePicker();
   String errorMessage = '';
 
@@ -38,7 +36,6 @@ class _SelfieScreenState extends State<SelfieScreen> {
       );
       setState(() {
         if (pickedFile != null) {
-          _image = File(pickedFile.path);
         } else {
           setState(() {
             errorMessage = 'No Image Selected';

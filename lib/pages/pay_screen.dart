@@ -105,7 +105,6 @@ class _PayScreenState extends State<PayScreen> {
 
     //process payment
 
-    final String toPlayerId = widget.toPlayerId;
     final double newSenderBalance = currentBalance - amountToPay;
 
     final DatabaseReference receiverRef = FirebaseDatabase.instance.ref(
