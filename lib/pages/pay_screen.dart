@@ -47,7 +47,11 @@ class _PayScreenState extends State<PayScreen> {
     final String amountText = _amount.text.trim();
     if (amountText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter an amount to pay.')),
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please enter an amount to pay.'),
+          duration: Duration(milliseconds: 800),
+        ),
       );
       return; // Exit the method if no amount is entered
     }
@@ -90,9 +94,12 @@ class _PayScreenState extends State<PayScreen> {
     final currentBalance = currentPlayer?['balance'] ?? 0;
 
     if (amountToPay > currentBalance) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Insufficient balance.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Insufficient balance.'),
+          duration: Duration(milliseconds: 800),
+        ),
+      );
       return; // Exit if balance is insufficient
     }
 

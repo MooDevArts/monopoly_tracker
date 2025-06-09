@@ -222,7 +222,7 @@ class _MpayHomeState extends State<MpayHome> {
                             }
                           },
                           child: Card(
-                            margin: const EdgeInsets.all(4.0),
+                            margin: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
                                 playerName,
@@ -329,7 +329,7 @@ class _MpayHomeState extends State<MpayHome> {
                   }
                 },
               ),
-              // SizedBox(height: 50),
+              SizedBox(height: 20),
             ],
           ),
         ),

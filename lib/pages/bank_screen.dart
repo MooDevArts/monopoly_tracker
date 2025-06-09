@@ -206,8 +206,9 @@ class _BankScreenState extends State<BankScreen> {
                                   // Check if the result is true (payment was done)
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 800),
                                       backgroundColor: Colors.green,
-                                      content: Text('Payment Seccessful'),
+                                      content: Text('Payment Successful'),
                                     ),
                                   );
                                 }
