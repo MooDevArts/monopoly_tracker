@@ -20,7 +20,7 @@ class _GamesScreenState extends State<GamesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Successfully Signed In'),
+          content: Text('Signed In'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2), // Adjust the duration as needed
         ),
@@ -31,7 +31,7 @@ class _GamesScreenState extends State<GamesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Create or join a Game')),
+      appBar: AppBar(title: Text('Games')),
       body: Padding(
         padding: const EdgeInsets.all(50),
         child: Center(
@@ -52,6 +52,8 @@ class _GamesScreenState extends State<GamesScreen> {
                 child: Text('Create Game'),
               ),
               SizedBox(height: 50),
+              Text('Enter Game'),
+              SizedBox(height: 20),
               Expanded(
                 child: StreamBuilder(
                   stream: FirebaseDatabase.instance.ref('games').onValue,

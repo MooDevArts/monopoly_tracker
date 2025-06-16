@@ -96,6 +96,7 @@ class _PayScreenState extends State<PayScreen> {
     if (amountToPay > currentBalance) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+          backgroundColor: Colors.red,
           content: Text('Insufficient balance.'),
           duration: Duration(milliseconds: 800),
         ),
