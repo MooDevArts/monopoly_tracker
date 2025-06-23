@@ -41,10 +41,16 @@ dependencies:
   firebase_storage: ^12.4.6
   permission_handler: ^12.0.0+1
   audioplayers: ^6.4.0
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path: "icons/mpay-logo.png"
+  android: true
+  ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
