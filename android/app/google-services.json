@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "559609418737",
+    "firebase_url": "https://monopoly-tracker-153c3-default-rtdb.firebaseio.com",
     "project_id": "monopoly-tracker-153c3",
     "storage_bucket": "monopoly-tracker-153c3.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:559609418737:android:94190158acd9dc17e9aa50",
+        "mobilesdk_app_id": "1:559609418737:android:d13fff520681cf6ee9aa50",
         "android_client_info": {
-          "package_name": "com.example.monopoly_tracker"
+          "package_name": "com.spiderwebarts.monopoly_tracker"
         }
       },
       "oauth_client": [],
