@@ -51,18 +51,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBTCK8Dset9ZBprujD9DAosMra8-IUU-0s',
-    appId: '1:559609418737:android:94190158acd9dc17e9aa50',
+    appId: '1:559609418737:android:a2883efaaa8eee69e9aa50',
     messagingSenderId: '559609418737',
     projectId: 'monopoly-tracker-153c3',
+    databaseURL: 'https://monopoly-tracker-153c3-default-rtdb.firebaseio.com',
     storageBucket: 'monopoly-tracker-153c3.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA2Z8H1iuGoz5qhMpa-WeEfmMAps1mhWj0',
-    appId: '1:559609418737:ios:58bd498368442382e9aa50',
+    appId: '1:559609418737:ios:430d9299236db983e9aa50',
     messagingSenderId: '559609418737',
     projectId: 'monopoly-tracker-153c3',
+    databaseURL: 'https://monopoly-tracker-153c3-default-rtdb.firebaseio.com',
     storageBucket: 'monopoly-tracker-153c3.firebasestorage.app',
-    iosBundleId: 'com.example.monopolyTracker',
+    iosBundleId: 'com.example.monopolyTracker.RunnerTests',
   );
+
 }
